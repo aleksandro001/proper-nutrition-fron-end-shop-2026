@@ -1,0 +1,10 @@
+.git
+.next
+.vscode
+AGENTS.md
+node_modules
+dist
+coverage
+bun.lock
+schema.json
+src/__generated__output.ts

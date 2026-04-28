@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "usernamehw.errorlens",
+    "GraphQL.vscode-graphql",
+    "GraphQL.vscode-graphql-syntax"
+  ]
+}
