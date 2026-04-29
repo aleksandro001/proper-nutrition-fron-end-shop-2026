@@ -53,7 +53,7 @@
   --font-family-mono:
     'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo,
     monospace;
-  --background: oklch(1 0 0);
+  --background: #f5f5f5;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);

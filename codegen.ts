@@ -1,19 +1,16 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
-const schema = process.env.GRAPHQL_SCHEMA ?? 'schema.json'
-
 const config: CodegenConfig = {
   overwrite: true,
   ignoreNoDocuments: true,
-  schema,
+  schema: 'http://localhost:4200/graphql',
   documents: ['src/shared/graphql/**/*.graphql', 'src/features/**/*.graphql'],
   generates: {
-    'src/__generated__output.ts': {
-      plugins: [
-        'typescript',
-        'typescript-operations',
-        'typescript-react-apollo'
-      ],
+    'src/__generated__/': {
+      preset: 'client',
+      presetConfig: {
+        fragmentMasking: false
+      },
       config: {
         enumsAsTypes: true
       }
