@@ -8,12 +8,12 @@ interface Props {
 
 export function AuthChangeTypeForm({ isLogin }: Props) {
   return (
-    <div className="mt-3 text-center">
+    <div className="mt-4 text-center text-sm">
       {isLogin ? (
         <p>
           Don`t have an account?{' '}
           <Link
-            className="underline"
+            className="link-simple"
             href={PAGES.REGISTER}
           >
             Register
@@ -23,7 +23,7 @@ export function AuthChangeTypeForm({ isLogin }: Props) {
         <p>
           Already have an account?{' '}
           <Link
-            className="underline"
+            className="link-simple"
             href={PAGES.LOGIN}
           >
             Login

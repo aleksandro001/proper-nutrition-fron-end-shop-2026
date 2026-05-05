@@ -2,8 +2,9 @@
 
 import { isEmailRegex } from '../utils/is-email.regex'
 import { AuthChangeTypeForm } from './AuthChangeTypeForm'
-import { useMutation } from '@apollo/client/react'
-import cn from 'clsx'
+import { useApolloClient, useMutation } from '@apollo/client/react'
+import Image from 'next/image'
+import { cache, useSyncExternalStore } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
@@ -13,14 +14,29 @@ import { Input } from '@/shared/components/ui/input'
 import {
   AuthInput,
   LoginDocument,
-  RegisterDocument
+  LoginMutation,
+  LoginMutationVariables,
+  MeDocument,
+  RegisterDocument,
+  RegisterMutation,
+  RegisterMutationVariables
 } from '@/__generated__/graphql'
 
 interface Props {
   type: 'login' | 'register'
 }
+
+const emptySubscribe = () => () => {}
+const getHydratedSnapshot = () => true
+const getServerSnapshot = () => false
+
 export function AuthForm({ type }: Props) {
   const isLogin = type === 'login'
+  const isHydrated = useSyncExternalStore(
+    emptySubscribe,
+    getHydratedSnapshot,
+    getServerSnapshot
+  )
 
   const {
     register,
@@ -34,28 +50,37 @@ export function AuthForm({ type }: Props) {
     }
   })
 
-  const [auth, { loading }] = useMutation(
-    isLogin ? LoginDocument : RegisterDocument,
-    {
-      onCompleted: () => {
-        toast.success(
-          isLogin ? 'Logged in successfully!' : 'Registered successfully!',
-          { id: 'auth-success' }
-        )
-      },
-      onError: error => {
-        toast.error(error.message, { id: 'auth-error' })
-      }
+  const client = useApolloClient()
+
+  const [auth, { loading }] = useMutation<
+    LoginMutation | RegisterMutation,
+    LoginMutationVariables | RegisterMutationVariables
+  >(isLogin ? LoginDocument : RegisterDocument, {
+    onCompleted: data => {
+      const authData = 'login' in data ? data.login : data.register
+      client.writeQuery({
+        query: MeDocument,
+        data: {
+          me: authData.user
+        }
+      })
+      toast.success(
+        isLogin ? 'Logged in successfully!' : 'Registered successfully!',
+        { id: 'auth-success' }
+      )
+    },
+    onError: error => {
+      toast.error(error.message, { id: 'auth-error' })
     }
-  )
+  })
   const handleAuth = (data: AuthInput) => {
     auth({ variables: { data } })
   }
   return (
     <div className="flex h-screen">
-      <div className="m-auto w-sm bg-linear-to-tr from-[#8062ee] to-[#a088fc] p-5 text-white shadow-lg">
-        <h1 className="mb-5 text-center text-4xl font-bold">
-          {isLogin ? 'Login' : 'Register'}
+      <div className="relative m-auto w-sm rounded-xl bg-linear-to-tr from-[#8062ee] to-[#a088fc] p-10 text-white shadow-lg">
+        <h1 className="mb-5 text-center text-[2.2rem] font-bold">
+          {isLogin ? 'Sign In' : 'Sign Up'}
         </h1>
 
         <form
@@ -69,13 +94,12 @@ export function AuthForm({ type }: Props) {
               pattern: { value: isEmailRegex, message: 'Invalid email address' }
             })}
             placeholder="Enter: email"
-            className={cn(
-              'border border-transparent transition-colors',
-              errors.email ? 'border-red-500' : ''
-            )}
+            aria-invalid={!!errors.email}
           />
           {errors.email && (
-            <p className="text-sm text-red-500">{errors.email.message}</p>
+            <p className="text-destructive -mt-1 block text-xs">
+              {errors.email.message}
+            </p>
           )}
           <Input
             type="password"
@@ -87,17 +111,16 @@ export function AuthForm({ type }: Props) {
               }
             })}
             placeholder="Enter: password"
-            className={cn(
-              'border border-transparent transition-colors',
-              errors.password ? 'border-red-500' : ''
-            )}
+            aria-invalid={!!errors.password}
           />
           {errors.password && (
-            <p className="text-sm text-red-500">{errors.password.message}</p>
+            <p className="text-destructive -mt-1 block text-xs">
+              {errors.password.message}
+            </p>
           )}
           <div className="text-center">
             <Button
-              disabled={!isValid || loading}
+              disabled={!isHydrated || !isValid || loading}
               type="submit"
               variant={'secondary'}
             >
@@ -106,6 +129,15 @@ export function AuthForm({ type }: Props) {
           </div>
         </form>
         <AuthChangeTypeForm isLogin={isLogin} />
+        <Image
+          src="/images/emotions/salad.png"
+          alt="Salad"
+          width={200}
+          height={200}
+          loading="eager"
+          className="absolute -bottom-20 -left-20 -rotate-12"
+          draggable={false}
+        />
       </div>
     </div>
   )

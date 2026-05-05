@@ -1,7 +1,8 @@
 mutation Login($data: AuthInput!) {
   login(data: $data) {
-    accessToken
     user {
+      id
+      role
       email
     }
   }
