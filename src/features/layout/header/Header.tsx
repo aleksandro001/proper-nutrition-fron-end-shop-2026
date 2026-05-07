@@ -1,5 +1,6 @@
 'use client'
 
+import { Logout } from '../../auth/ui/Logout'
 import { navMenuItems } from './nav.data'
 import { Bell, Headset, User } from 'lucide-react'
 import Link from 'next/link'
@@ -38,6 +39,7 @@ export function Header() {
         >
           <Bell className="size-5" />
         </Button>
+        <Logout />
         <UserInfo
           avatarUrl={`https://avatars.githubusercontent.com/u/9919?s=200&v=4`}
           name={`Anonymous`}
