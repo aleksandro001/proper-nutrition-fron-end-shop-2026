@@ -3,9 +3,10 @@
 import { isEmailRegex } from '../utils/is-email.regex'
 import { AuthChangeTypeForm } from './AuthChangeTypeForm'
 import { useApolloClient, useMutation } from '@apollo/client/react'
+import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { cache, useSyncExternalStore } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
@@ -29,17 +30,18 @@ interface Props {
   type: 'login' | 'register'
 }
 
-const emptySubscribe = () => () => {}
-const getHydratedSnapshot = () => true
-const getServerSnapshot = () => false
-
 export function AuthForm({ type }: Props) {
   const isLogin = type === 'login'
-  const isHydrated = useSyncExternalStore(
-    emptySubscribe,
-    getHydratedSnapshot,
-    getServerSnapshot
-  )
+  const [isHydrated, setIsHydrated] = useState(false)
+  const ref = useRef<TurnstileInstance | null>(null)
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setIsHydrated(true)
+    }, 0)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [])
 
   const {
     register,
@@ -52,6 +54,7 @@ export function AuthForm({ type }: Props) {
       password: ''
     }
   })
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
   const client = useApolloClient()
   const router = useRouter()
@@ -76,10 +79,21 @@ export function AuthForm({ type }: Props) {
     },
     onError: error => {
       toast.error(error.message, { id: 'auth-error' })
+      ref.current?.reset()
+      setCaptchaToken(null)
     }
   })
   const handleAuth = (data: AuthInput) => {
-    auth({ variables: { data } })
+    if (!captchaToken) {
+      toast.error('Please complete the CAPTCHA challenge', {
+        id: 'captcha-error'
+      })
+      return
+    }
+    auth({
+      variables: { data },
+      context: { headers: { 'cf-turnstile-token': captchaToken } }
+    })
   }
   return (
     <div className="flex h-screen">
@@ -123,6 +137,15 @@ export function AuthForm({ type }: Props) {
               {errors.password.message}
             </p>
           )}
+          <div className="flex scale-80 justify-center pt-2">
+            <Turnstile
+              ref={ref}
+              siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+              onSuccess={token => setCaptchaToken(token)}
+              onExpire={() => setCaptchaToken(null)}
+              options={{ theme: 'light' }}
+            />
+          </div>
           <div className="text-center">
             <Button
               disabled={!isHydrated || !isValid || loading}

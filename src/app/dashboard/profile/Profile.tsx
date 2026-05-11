@@ -1,6 +1,9 @@
-import { useGetProfileQuery } from "@/__generated__output"
+'use client'
+
+import { useAuth } from '@/features/auth/hooks/useAuth'
 
 export const Profile = () => {
-  const {data} =  useGetProfileQuery()
-  return <div>Profile</div>
+  const { user } = useAuth()
+
+  return <div>{user?.email ?? 'Profile'}</div>
 }
