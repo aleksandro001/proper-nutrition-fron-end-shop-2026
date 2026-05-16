@@ -1,7 +1,7 @@
 'use client'
 
 import { Logout } from '../../auth/ui/Logout'
-import { navMenuItems } from './nav.data'
+import { navMenuItems } from './nav-menu-data'
 import { Bell, Headset, User } from 'lucide-react'
 import Link from 'next/link'
 
@@ -16,7 +16,7 @@ import { PAGES } from '@/shared/config/page.config'
 export function Header() {
   const { user } = useAuth()
   return (
-    <header className="flex items-center justify-between p-5">
+    <header className="flex items-center justify-between">
       <div className="flex items-center gap-9">
         <Link
           href={PAGES.DASHBOARD}
@@ -41,7 +41,7 @@ export function Header() {
         </Button>
         <Logout />
         <UserInfo
-          avatarUrl={`https://avatars.githubusercontent.com/u/9919?s=200&v=4`}
+          avatarUrl={'/images/avatar-placeholder.png'}
           name={`Anonymous`}
           email={user?.email || ''}
         />
