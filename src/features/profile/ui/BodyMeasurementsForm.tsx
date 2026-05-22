@@ -1,9 +1,17 @@
 import { TProfileForm } from '../types/profile-update.types'
-import { Ruler, Weight } from 'lucide-react'
+import {
+  Activity,
+  ActivityIcon,
+  CircleSmall,
+  Ruler,
+  Target,
+  Weight
+} from 'lucide-react'
 import Image from 'next/image'
-import { UseFormReturn } from 'react-hook-form'
+import { Controller, UseFormReturn } from 'react-hook-form'
 
-import { InputLabel } from '@/shared/components/custom-ui/input-label/InputLabel'
+import { InputLabel } from '@/shared/components/custom-ui/with-label/InputLabel'
+import { SelectLabel } from '@/shared/components/custom-ui/with-label/SelectLabel'
 
 const optionalNumber = (value: string) =>
   value.trim() === '' ? undefined : Number(value)
@@ -82,6 +90,42 @@ export function BodyMeasurementsForm({
             placeholder="Arm cm"
             type="number"
             {...register('measurement.armCm', { setValueAs: optionalNumber })}
+          />
+          <Controller
+            control={form.control}
+            name="measurement.nutritionGoal"
+            render={({ field }) => (
+              <SelectLabel
+                value={field.value}
+                onChange={field.onChange}
+                label="Set your nutrition goal"
+                Icon={CircleSmall}
+                options={[
+                  { label: 'Lose weight', value: 'LoseWeight' },
+                  { label: 'Maintain weight', value: 'Maintain' },
+                  { label: 'Gain muscle', value: 'MuscleGain' }
+                ]}
+              />
+            )}
+          />
+          <Controller
+            control={form.control}
+            name="measurement.activityLevel"
+            render={({ field }) => (
+              <SelectLabel
+                value={field.value}
+                onChange={field.onChange}
+                label="Define your activity level"
+                Icon={ActivityIcon}
+                options={[
+                  { label: 'Lightly active', value: 'LightlyActive' },
+                  { label: 'Moderately active', value: 'ModeratelyActive' },
+                  { label: 'Sedentary', value: 'Sedentary' },
+                  { label: 'Very Active', value: 'VeryActive' },
+                  { label: 'Active', value: 'Active' }
+                ]}
+              />
+            )}
           />
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { Input } from '../../ui/input'
+import { LabelIcon } from './LabelIcon'
 import { cn } from '@/shared/utils'
 import { LucideIcon } from 'lucide-react'
 import { ComponentProps } from 'react'
@@ -11,12 +12,9 @@ interface Props extends ComponentProps<'input'> {
 export function InputLabel({ label, Icon, className, type, ...props }: Props) {
   return (
     <label className="relative block">
-      <span className="text-foreground mb-1.5 block text-sm opacity-50">
-        {label}
-      </span>
-      <Icon
-        size={16}
-        className="absolute bottom-2 left-3 opacity-50"
+      <LabelIcon
+        label={label}
+        Icon={Icon}
       />
       <Input
         type={type}

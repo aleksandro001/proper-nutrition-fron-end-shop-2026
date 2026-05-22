@@ -5,7 +5,7 @@ import { BodyMeasurementsForm } from './BodyMeasurementsForm'
 import { GeneralInformationForm } from './GeneralInformationForm'
 import { useMutation } from '@apollo/client/react'
 import { User } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
@@ -15,45 +15,20 @@ import { Button } from '@/shared/components/ui/button'
 import type { GetProfileQuery } from '@/__generated__/graphql'
 import { UpdateProfileDocument } from '@/__generated__/graphql'
 
-type ProfileUser = GetProfileQuery['me']
-
-function getProfileFormValues(user: ProfileUser): TProfileForm {
-  const profile = user.profile
-  const measurement = user.measurements
-
-  return {
-    email: user.email,
-    profile: {
-      age: profile?.age ?? undefined,
-      bio: profile?.bio ?? '',
-      fullName: profile?.fullName ?? '',
-      gender: profile?.gender ?? undefined
-    },
-    measurement: {
-      activityLevel: measurement?.activityLevel ?? undefined,
-      armCm: measurement?.armCm ?? undefined,
-      chestCm: measurement?.chestCm ?? undefined,
-      goalWeightKg: measurement?.goalWeightKg ?? undefined,
-      heightCm: measurement?.heightCm ?? undefined,
-      nutritionGoal: measurement?.nutritionGoal ?? undefined,
-      thighCm: measurement?.thighCm ?? undefined,
-      waistCm: measurement?.waistCm ?? undefined,
-      weightKg: measurement?.weightKg ?? undefined
-    }
-  }
-}
-
 export function ProfileForm({ data }: { data: GetProfileQuery }) {
   const [avatarUrl, setAvatarUrl] = useState<string>()
   const form = useForm<TProfileForm>({
     mode: 'onChange',
-    defaultValues: getProfileFormValues(data.me)
+    defaultValues: {
+      email: data?.me?.email ?? '',
+      avatarUrl: data?.me?.avatarUrl ?? '',
+      profile: data?.me?.profile ?? {},
+      measurement: data?.me?.measurements ?? {}
+    }
   })
 
-  useEffect(() => {
-    form.reset(getProfileFormValues(data.me))
-  }, [data, form])
-  console.log(form.watch('avatarUrl'))
+  console.log('avatarUrl ', form.watch('avatarUrl'))
+
   const [updateProfile, { loading }] = useMutation(UpdateProfileDocument, {
     onCompleted() {
       toast.success('Profile updated.')
@@ -64,9 +39,25 @@ export function ProfileForm({ data }: { data: GetProfileQuery }) {
   })
 
   const submit = form.handleSubmit(data => {
+    const cleanedData = {
+      ...data,
+      profile: data.profile
+        ? Object.fromEntries(
+            Object.entries(data.profile).filter(([key]) => key !== '__typename')
+          )
+        : {},
+      measurement: data.measurement
+        ? Object.fromEntries(
+            Object.entries(data.measurement).filter(
+              ([key]) => key !== '__typename'
+            )
+          )
+        : {}
+    }
+
     updateProfile({
       variables: {
-        data
+        data: cleanedData
       }
     })
   })

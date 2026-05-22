@@ -1,9 +1,12 @@
 import { TProfileForm } from '../types/profile-update.types'
 import { AvatarUpload } from './AvatarUpload'
-import { Mail, User, UserCircle } from 'lucide-react'
-import { UseFormReturn } from 'react-hook-form'
+import { CircleSmall, Mail, User, UserCircle } from 'lucide-react'
+import { Controller, UseFormReturn } from 'react-hook-form'
 
-import { InputLabel } from '@/shared/components/custom-ui/input-label/InputLabel'
+import { InputLabel } from '@/shared/components/custom-ui/with-label/InputLabel'
+import { SelectLabel } from '@/shared/components/custom-ui/with-label/SelectLabel'
+
+import type { Gender } from '@/__generated__/graphql'
 
 const optionalNumber = (value: string) =>
   value.trim() === '' ? undefined : Number(value)
@@ -40,13 +43,31 @@ export function GeneralInformationForm({
           placeholder="Email"
           {...register('email')}
         />
-        <InputLabel
-          label="Age"
-          Icon={UserCircle}
-          placeholder="Age"
-          type="number"
-          {...register('profile.age', { setValueAs: optionalNumber })}
-        />
+        <div className="grid grid-cols-2 gap-2">
+          <Controller
+            control={form.control}
+            name="profile.gender"
+            render={({ field }) => (
+              <SelectLabel
+                value={field.value}
+                label="Gender"
+                onChange={field.onChange}
+                Icon={CircleSmall}
+                options={[
+                  { label: 'Male', value: 'MALE' },
+                  { label: 'Female', value: 'FEMALE' }
+                ]}
+              />
+            )}
+          />
+          <InputLabel
+            label="Age"
+            Icon={UserCircle}
+            placeholder="Age"
+            type="number"
+            {...register('profile.age', { setValueAs: optionalNumber })}
+          />
+        </div>
         <label className="relative block">
           <span className="text-foreground mb-1.5 block text-sm opacity-50">
             Bio
