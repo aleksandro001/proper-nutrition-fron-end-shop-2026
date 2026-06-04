@@ -6,8 +6,6 @@ import { Controller, UseFormReturn } from 'react-hook-form'
 import { InputLabel } from '@/shared/components/custom-ui/with-label/InputLabel'
 import { SelectLabel } from '@/shared/components/custom-ui/with-label/SelectLabel'
 
-import type { Gender } from '@/__generated__/graphql'
-
 const optionalNumber = (value: string) =>
   value.trim() === '' ? undefined : Number(value)
 

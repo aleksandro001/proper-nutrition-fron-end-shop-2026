@@ -1,12 +1,5 @@
 import { TProfileForm } from '../types/profile-update.types'
-import {
-  Activity,
-  ActivityIcon,
-  CircleSmall,
-  Ruler,
-  Target,
-  Weight
-} from 'lucide-react'
+import { ActivityIcon, CircleSmall, Ruler, Weight } from 'lucide-react'
 import Image from 'next/image'
 import { Controller, UseFormReturn } from 'react-hook-form'
 
@@ -101,9 +94,9 @@ export function BodyMeasurementsForm({
                 label="Set your nutrition goal"
                 Icon={CircleSmall}
                 options={[
-                  { label: 'Lose weight', value: 'LoseWeight' },
-                  { label: 'Maintain weight', value: 'Maintain' },
-                  { label: 'Gain muscle', value: 'MuscleGain' }
+                  { label: 'Lose weight', value: 'WEIGHT_LOSS' },
+                  { label: 'Maintain weight', value: 'MAINTENANCE' },
+                  { label: 'Gain muscle', value: 'MUSCLE_GAIN' }
                 ]}
               />
             )}
@@ -118,11 +111,11 @@ export function BodyMeasurementsForm({
                 label="Define your activity level"
                 Icon={ActivityIcon}
                 options={[
-                  { label: 'Lightly active', value: 'LightlyActive' },
-                  { label: 'Moderately active', value: 'ModeratelyActive' },
-                  { label: 'Sedentary', value: 'Sedentary' },
-                  { label: 'Very Active', value: 'VeryActive' },
-                  { label: 'Active', value: 'Active' }
+                  { label: 'Lightly active', value: 'LIGHT' },
+                  { label: 'Moderately active', value: 'MODERATE' },
+                  { label: 'Sedentary', value: 'SEDENTARY' },
+                  { label: 'Very Active', value: 'VERY_ACTIVE' },
+                  { label: 'Active', value: 'ACTIVE' }
                 ]}
               />
             )}

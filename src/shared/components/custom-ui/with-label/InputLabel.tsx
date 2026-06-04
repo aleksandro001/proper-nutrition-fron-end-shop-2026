@@ -5,7 +5,7 @@ import { LucideIcon } from 'lucide-react'
 import { ComponentProps } from 'react'
 
 interface Props extends ComponentProps<'input'> {
-  label: string
+  label?: string
   Icon: LucideIcon
 }
 
@@ -18,8 +18,8 @@ export function InputLabel({ label, Icon, className, type, ...props }: Props) {
       />
       <Input
         type={type}
-        className={cn(className, 'rounded-2xl bg-[#ececec] pl-9')}
         {...props}
+        className={cn('rounded-2xl bg-[#ececec] pl-9', className)}
       />
     </label>
   )

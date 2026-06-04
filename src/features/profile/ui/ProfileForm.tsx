@@ -9,25 +9,22 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
-import { HeadingWithIcon } from '@/shared/components/custom-ui/heding-with-icon/HedingWithIcon'
+import { HeadingWithIcon } from '@/shared/components/custom-ui/heading-with-icon/HeadingWithIcon'
 import { Button } from '@/shared/components/ui/button'
 
 import type { GetProfileQuery } from '@/__generated__/graphql'
 import { UpdateProfileDocument } from '@/__generated__/graphql'
 
 export function ProfileForm({ data }: { data: GetProfileQuery }) {
-  const [avatarUrl, setAvatarUrl] = useState<string>()
+  const [avatarUrl, setAvatarUrl] = useState('')
   const form = useForm<TProfileForm>({
     mode: 'onChange',
     defaultValues: {
       email: data?.me?.email ?? '',
-      avatarUrl: data?.me?.avatarUrl ?? '',
       profile: data?.me?.profile ?? {},
       measurement: data?.me?.measurements ?? {}
     }
   })
-
-  console.log('avatarUrl ', form.watch('avatarUrl'))
 
   const [updateProfile, { loading }] = useMutation(UpdateProfileDocument, {
     onCompleted() {
@@ -37,6 +34,11 @@ export function ProfileForm({ data }: { data: GetProfileQuery }) {
       toast.error(error.message)
     }
   })
+
+  const handleAvatarChange = (url: string) => {
+    setAvatarUrl(url)
+    form.setValue('avatarUrl', url, { shouldDirty: true })
+  }
 
   const submit = form.handleSubmit(data => {
     const cleanedData = {
@@ -88,7 +90,7 @@ export function ProfileForm({ data }: { data: GetProfileQuery }) {
           <GeneralInformationForm
             avatarUrl={avatarUrl}
             form={form}
-            onAvatarChange={setAvatarUrl}
+            onAvatarChange={handleAvatarChange}
           />
           <BodyMeasurementsForm form={form} />
         </div>
