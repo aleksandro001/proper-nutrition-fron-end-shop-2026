@@ -1,0 +1,57 @@
+query GetRecipeBySlug($slug: String!) {
+  recipeBySlug(slug: $slug) {
+    id
+    image
+    title
+    description
+    slug
+    calories
+    cookingTime
+    difficulty
+    mealType
+    likes
+    views
+    author {
+      avatarUrl
+      profile {
+        fullName
+      }
+    }
+    tags {
+      name
+    }
+    recipeIngredients {
+      quantity
+      unit
+      ingredient {
+        id
+        name
+        iconUrl
+        price
+      }
+    }
+    recipeSteps {
+      id
+      title
+      description
+      image
+    }
+    nutritionFact {
+      carbohydrates
+      fats
+      proteins
+      fiber
+    }
+    comments {
+      id
+      content
+      createdAt
+      author {
+        avatarUrl
+        profile {
+          fullName
+        }
+      }
+    }
+  }
+}

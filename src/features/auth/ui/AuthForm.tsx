@@ -1,12 +1,10 @@
 'use client'
 
-import { isEmailRegex } from '../utils/is-email.regex'
-import { AuthChangeTypeForm } from './AuthChangeTypeForm'
 import { useApolloClient, useMutation } from '@apollo/client/react'
-import { Turnstile, TurnstileInstance } from '@marsidev/react-turnstile'
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
@@ -16,15 +14,18 @@ import { Input } from '@/shared/components/ui/input'
 import { PAGES } from '@/shared/config/page.config'
 
 import {
-  AuthInput,
+  type AuthInput,
   LoginDocument,
-  LoginMutation,
-  LoginMutationVariables,
+  type LoginMutation,
+  type LoginMutationVariables,
   MeDocument,
   RegisterDocument,
-  RegisterMutation,
-  RegisterMutationVariables
+  type RegisterMutation,
+  type RegisterMutationVariables
 } from '@/__generated__/graphql'
+
+import { isEmailRegex } from '../utils/is-email.regex'
+import { AuthChangeTypeForm } from './AuthChangeTypeForm'
 
 interface Props {
   type: 'login' | 'register'
@@ -32,16 +33,6 @@ interface Props {
 
 export function AuthForm({ type }: Props) {
   const isLogin = type === 'login'
-  const [isHydrated, setIsHydrated] = useState(false)
-  const ref = useRef<TurnstileInstance | null>(null)
-
-  useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
-      setIsHydrated(true)
-    }, 0)
-
-    return () => window.clearTimeout(timeoutId)
-  }, [])
 
   const {
     register,
@@ -54,6 +45,8 @@ export function AuthForm({ type }: Props) {
       password: ''
     }
   })
+
+  const ref = useRef<TurnstileInstance | null>(null)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
   const client = useApolloClient()
@@ -64,25 +57,34 @@ export function AuthForm({ type }: Props) {
     LoginMutationVariables | RegisterMutationVariables
   >(isLogin ? LoginDocument : RegisterDocument, {
     onCompleted: data => {
-      const authData = 'login' in data ? data.login : data.register
+      const authData = 'login' in data ? data.login : data?.register
+
       client.writeQuery({
         query: MeDocument,
         data: {
           me: authData.user
         }
       })
+
       toast.success(
         isLogin ? 'Logged in successfully!' : 'Registered successfully!',
-        { id: 'auth-success' }
+        {
+          id: 'auth-success'
+        }
       )
+
       router.replace(PAGES.DASHBOARD)
     },
+
     onError: error => {
-      toast.error(error.message, { id: 'auth-error' })
+      toast.error(error.message, {
+        id: 'auth-error'
+      })
       ref.current?.reset()
       setCaptchaToken(null)
     }
   })
+
   const handleAuth = (data: AuthInput) => {
     if (!captchaToken) {
       toast.error('Please complete the CAPTCHA challenge', {
@@ -90,15 +92,23 @@ export function AuthForm({ type }: Props) {
       })
       return
     }
+
     auth({
-      variables: { data },
-      context: { headers: { 'cf-turnstile-token': captchaToken } }
+      variables: {
+        data
+      },
+      context: {
+        headers: {
+          'cf-turnstile-token': captchaToken
+        }
+      }
     })
   }
+
   return (
     <div className="flex h-screen">
-      <div className="relative m-auto w-sm rounded-xl bg-linear-to-tr from-[#8062ee] to-[#a088fc] p-10 text-white shadow-lg">
-        <h1 className="mb-5 text-center text-[2.2rem] font-bold">
+      <div className="relative m-auto w-sm rounded-lg bg-linear-to-tr from-[#8062ee] to-[#a088fc] p-10 text-white shadow-lg">
+        <h1 className="mb-5 text-center text-[2.3rem] font-bold">
           {isLogin ? 'Sign In' : 'Sign Up'}
         </h1>
 
@@ -106,13 +116,17 @@ export function AuthForm({ type }: Props) {
           className="space-y-3"
           onSubmit={handleSubmit(handleAuth)}
         >
+           
           <Input
-            type="email"
             {...register('email', {
               required: true,
-              pattern: { value: isEmailRegex, message: 'Invalid email address' }
+              pattern: {
+                value: isEmailRegex,
+                message: 'Invalid email address'
+              }
             })}
-            placeholder="Enter: email"
+            type="email"
+            placeholder="Enter email:"
             aria-invalid={!!errors.email}
           />
           {errors.email && (
@@ -121,7 +135,6 @@ export function AuthForm({ type }: Props) {
             </p>
           )}
           <Input
-            type="password"
             {...register('password', {
               required: true,
               minLength: {
@@ -129,7 +142,8 @@ export function AuthForm({ type }: Props) {
                 message: 'Password must be at least 6 characters'
               }
             })}
-            placeholder="Enter: password"
+            type="password"
+            placeholder="Enter password:"
             aria-invalid={!!errors.password}
           />
           {errors.password && (
@@ -143,27 +157,30 @@ export function AuthForm({ type }: Props) {
               siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
               onSuccess={token => setCaptchaToken(token)}
               onExpire={() => setCaptchaToken(null)}
-              options={{ theme: 'light' }}
+              options={{
+                theme: 'light'
+              }}
             />
           </div>
           <div className="text-center">
             <Button
-              disabled={!isHydrated || !isValid || loading}
               type="submit"
-              variant={'secondary'}
+              disabled={!isValid || loading}
+              variant="secondary"
             >
               {isLogin ? 'Login' : 'Register'}
             </Button>
           </div>
         </form>
+
         <AuthChangeTypeForm isLogin={isLogin} />
+
         <Image
           src="/images/emotions/salad.png"
           alt="Salad"
           width={200}
           height={200}
-          loading="eager"
-          className="absolute -bottom-20 -left-20 -rotate-12"
+          className="absolute -bottom-16 -left-16 -rotate-12"
           draggable={false}
         />
       </div>

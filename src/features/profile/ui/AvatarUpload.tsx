@@ -1,3 +1,5 @@
+'use client'
+
 import { Edit } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -16,6 +18,7 @@ export function AvatarUpload({ value, onChange }: Props) {
 
   async function upload(file: File) {
     setLoading(true)
+
     const formData = new FormData()
     formData.append('file', file)
 
@@ -24,36 +27,41 @@ export function AvatarUpload({ value, onChange }: Props) {
       body: formData,
       credentials: 'include'
     })
+
     const data = await res.json()
+
     onChange(data.url)
+
     setLoading(false)
   }
+
   return (
-    <div className="flex items-center gap-3">
+    <div className="relative flex items-center gap-3">
       <Image
         src={value || '/images/avatar-placeholder.png'}
+        width={64}
+        height={64}
         alt="avatar"
-        width={50}
-        height={50}
-        className="rounded-full object-cover"
+        className="h-16 w-16 rounded-full object-cover"
       />
+
       <label>
         <input
           type="file"
-          accept="image/*"
           hidden
+          accept="image/*"
           onChange={e => {
             const file = e.target.files?.[0]
-            if (file) {
-              upload(file)
-            }
+            if (file) upload(file)
           }}
         />
+
         <Button
           variant="soft"
           size="sm"
-          disabled={loading}
           asChild
+          disabled={loading}
+          className="absolute -right-1 -bottom-1 rounded-full"
         >
           <span>
             <Edit className={loading ? 'animate-spin' : ''} />

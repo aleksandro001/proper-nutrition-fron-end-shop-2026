@@ -1,4 +1,5 @@
-import { Input } from '../../ui/input'
+import { LucideIcon } from 'lucide-react'
+
 import {
   Select,
   SelectContent,
@@ -9,8 +10,6 @@ import {
   SelectValue
 } from '../../ui/select'
 import { LabelIcon } from './LabelIcon'
-import { cn } from '@/shared/utils'
-import { LucideIcon } from 'lucide-react'
 
 interface Props {
   label: string
@@ -23,9 +22,9 @@ interface Props {
 export function SelectLabel({
   label,
   Icon,
-  onChange,
+  options = [],
   value,
-  options = []
+  onChange
 }: Props) {
   return (
     <label className="relative block">
@@ -37,10 +36,10 @@ export function SelectLabel({
         value={value || undefined}
         onValueChange={onChange}
       >
-        <SelectTrigger className="w-full rounded-2xl pl-9">
+        <SelectTrigger className="w-full rounded-xl bg-[#f0efef] pl-9">
           <SelectValue placeholder={label} />
         </SelectTrigger>
-        <SelectContent className="bg-[#ececec]">
+        <SelectContent>
           <SelectGroup>
             <SelectInsideLabel>{label}</SelectInsideLabel>
             {options.map(option => (

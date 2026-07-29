@@ -20,7 +20,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@constants/*": ["./src/shared/constants/*"]
+      "@/constants/*": ["./src/shared/constants/*"]
     }
   },
   "include": [
@@ -29,7 +29,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "**/*.mts",
+    "graphql.config.yml"
   ],
   "exclude": ["node_modules"]
 }

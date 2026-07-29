@@ -1,25 +1,27 @@
 import { MenuAccordionItem } from './MenuAccordionItem'
 import { ISidebarMenuAccordionItem } from './sidebar-menu-accordion.types'
 
-interface Props {
-  data: ISidebarMenuAccordionItem[]
-  activeFilter?: string
-  onValueChange?: (value: string) => void
+interface Props<K extends string = string> {
+  data: ISidebarMenuAccordionItem<K>[]
+  values: Record<K, string | null>
+  onValueChange?: ((key: K, value: string) => void) | null
 }
 
-export function SidebarMenuAccordion({
+export function SidebarMenuAccordion<K extends string = string>({
   data,
-  activeFilter,
+  values,
   onValueChange
-}: Props) {
+}: Props<K>) {
   return (
     <div className="space-y-4">
       {data.map(item => (
-        <MenuAccordionItem
+        <MenuAccordionItem<K>
           key={item.name}
           item={item}
-          activeValue={activeFilter}
-          onValueChange={onValueChange}
+          activeValue={values[item.key]}
+          onValueChange={
+            onValueChange ? value => onValueChange(item.key, value) : null
+          }
         />
       ))}
     </div>

@@ -2,7 +2,7 @@
 
 import { jwtVerify } from 'jose'
 
-import { Role } from '@/__generated__/graphql'
+import type { Role } from '@/__generated__/graphql'
 
 type TAuthTokenData = {
   id: string
@@ -15,6 +15,7 @@ export async function jwtVerifyServer(accessToken: string) {
       accessToken,
       new TextEncoder().encode(process.env.JWT_SECRET_KEY)
     )
+
     return payload
   } catch (error) {
     if (
@@ -24,7 +25,8 @@ export async function jwtVerifyServer(accessToken: string) {
       console.log('Token has expired')
       return null
     }
-    console.error('Error verifying JWT:', error)
+
+    console.log('Error verifying JWT:', error)
     return null
   }
 }

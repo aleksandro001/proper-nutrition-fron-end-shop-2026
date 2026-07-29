@@ -1,8 +1,9 @@
-import { simpleApolloClient } from '../apollo-client'
 import { CombinedGraphQLErrors, Observable } from '@apollo/client'
 import { ErrorLink } from '@apollo/client/link/error'
 
 import { GetNewTokensDocument } from '@/__generated__/graphql'
+
+import { simpleApolloClient } from '../apollo-client'
 
 export const errorLink = new ErrorLink(({ error, operation, forward }) => {
   if (!CombinedGraphQLErrors.is(error)) return
@@ -18,11 +19,12 @@ export const errorLink = new ErrorLink(({ error, operation, forward }) => {
           .then(() => {
             forward(operation).subscribe(observer)
           })
-          .catch(error => {
-            observer.error(error)
+          .catch(err => {
+            observer.error(err)
           })
       })
     }
   }
+
   return
 })

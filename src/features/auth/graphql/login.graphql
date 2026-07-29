@@ -2,8 +2,12 @@ mutation Login($data: AuthInput!) {
   login(data: $data) {
     user {
       id
-      role
       email
+      role
+      avatarUrl
+      profile {
+        fullName
+      }
     }
   }
 }

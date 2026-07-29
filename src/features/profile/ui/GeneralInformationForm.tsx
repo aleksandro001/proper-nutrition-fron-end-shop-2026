@@ -1,46 +1,50 @@
-import { TProfileForm } from '../types/profile-update.types'
-import { AvatarUpload } from './AvatarUpload'
-import { CircleSmall, Mail, User, UserCircle } from 'lucide-react'
+import { CardSim, CircleSmall, Mail, UserCircle } from 'lucide-react'
 import { Controller, UseFormReturn } from 'react-hook-form'
 
 import { InputLabel } from '@/shared/components/custom-ui/with-label/InputLabel'
 import { SelectLabel } from '@/shared/components/custom-ui/with-label/SelectLabel'
 
-const optionalNumber = (value: string) =>
-  value.trim() === '' ? undefined : Number(value)
+import { Gender } from '@/__generated__/graphql'
+
+import { TProfileForm } from '../types/profile-update.types'
+import { AvatarUpload } from './AvatarUpload'
 
 export function GeneralInformationForm({
-  avatarUrl,
-  form,
-  onAvatarChange
+  form
 }: {
-  avatarUrl?: string
-  form: UseFormReturn<TProfileForm>
-  onAvatarChange: (url: string) => void
+  form: UseFormReturn<TProfileForm, unknown, TProfileForm>
 }) {
   const { register } = form
+
   return (
-    <div className="rounded-xl border bg-white p-6">
-      <h2 className="mb-6 text-lg font-semibold">General Information</h2>
+    <div className="rounded-xl border p-6">
+      <h2 className="mb-6 text-lg font-semibold">General information</h2>
+
       <div className="space-y-4">
         <div className="flex items-center gap-4">
           <AvatarUpload
-            onChange={onAvatarChange}
-            value={avatarUrl}
+            onChange={url => {
+              form.setValue('avatarUrl', url)
+            }}
+            value={form.watch('avatarUrl') || undefined}
           />
+
           <InputLabel
-            label="Full Name"
-            Icon={User}
-            placeholder="Full Name"
+            Icon={CardSim}
+            label="Full name"
+            placeholder="Full name"
             {...register('profile.fullName')}
           />
         </div>
+
+        {/* TODO: Email verification status */}
         <InputLabel
-          label="Email"
           Icon={Mail}
+          label="Email"
           placeholder="Email"
           {...register('email')}
         />
+
         <div className="grid grid-cols-2 gap-2">
           <Controller
             control={form.control}
@@ -48,30 +52,37 @@ export function GeneralInformationForm({
             render={({ field }) => (
               <SelectLabel
                 value={field.value}
-                label="Gender"
                 onChange={field.onChange}
                 Icon={CircleSmall}
+                label="Gender"
                 options={[
-                  { label: 'Male', value: 'MALE' },
-                  { label: 'Female', value: 'FEMALE' }
+                  {
+                    label: 'Male',
+                    value: Gender.Male
+                  },
+                  {
+                    label: 'Female',
+                    value: Gender.Female
+                  }
                 ]}
               />
             )}
           />
           <InputLabel
-            label="Age"
             Icon={UserCircle}
+            label="Age"
             placeholder="Age"
             type="number"
-            {...register('profile.age', { setValueAs: optionalNumber })}
+            {...register('profile.age', {
+              setValueAs: value => (value === '' ? undefined : Number(value))
+            })}
           />
         </div>
+
         <label className="relative block">
-          <span className="text-foreground mb-1.5 block text-sm opacity-50">
-            Bio
-          </span>
+          <span className="mb-1.5 block text-sm opacity-50">Bio</span>
           <textarea
-            className="dark:bg-input/30 w-full rounded-md border p-3 transition-colors"
+            className="w-full resize-none rounded-md border bg-[#f0efef] p-3 font-mono"
             placeholder="Bio"
             {...register('profile.bio')}
           />

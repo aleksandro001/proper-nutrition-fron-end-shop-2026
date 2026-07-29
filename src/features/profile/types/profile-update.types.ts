@@ -1,3 +1,3 @@
-import type { UserUpdateInput } from '@/__generated__/graphql'
+import type { UserUpdateCustomInput } from '@/__generated__/graphql'
 
-export type TProfileForm = Omit<UserUpdateInput, 'password'>
+export type TProfileForm = Omit<UserUpdateCustomInput, 'password'>

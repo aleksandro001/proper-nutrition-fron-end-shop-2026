@@ -1,20 +1,24 @@
-import { CSSProperties } from 'react'
+import type { CSSProperties } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 interface ISkeletonLoader {
-  count: number
+  count?: number
   style?: CSSProperties
   className?: string
 }
 
-export function SkeletonLoader({ count, style, className }: ISkeletonLoader) {
+export function SkeletonLoader({
+  count = 1,
+  style,
+  className
+}: ISkeletonLoader) {
   return (
     <>
       {Array.from({ length: count }, (_, index) => (
         <div
           key={index}
           className={twMerge(
-            'my-4 h-10 w-full animate-pulse rounded-2xl bg-gray-400',
+            'mb-[0.65rem] h-10 animate-pulse rounded-xl bg-[#cfcfcf]/30 last:mb-0',
             className
           )}
           style={style}

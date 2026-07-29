@@ -12,7 +12,7 @@ const config: CodegenConfig = {
         fragmentMasking: false
       },
       config: {
-        enumsAsTypes: true
+        enumsAsConst: true
       }
     },
     'schema.json': {

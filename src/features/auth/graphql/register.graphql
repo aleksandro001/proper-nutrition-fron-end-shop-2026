@@ -2,8 +2,12 @@ mutation Register($data: AuthInput!) {
   register(data: $data) {
     user {
       id
-      role
       email
+      role
+      avatarUrl
+      profile {
+        fullName
+      }
     }
   }
 }

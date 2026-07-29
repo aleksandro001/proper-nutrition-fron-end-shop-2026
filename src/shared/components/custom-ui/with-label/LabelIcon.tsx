@@ -1,4 +1,4 @@
-import { Icon, LucideIcon } from 'lucide-react'
+import { LucideIcon } from 'lucide-react'
 
 interface Props {
   label?: string
@@ -9,13 +9,11 @@ export function LabelIcon({ label, Icon }: Props) {
   return (
     <>
       {!!label && (
-        <span className="text-foreground mb-1.5 block text-sm opacity-50">
-          {label}
-        </span>
+        <span className="mb-1.5 block text-sm opacity-50">{label}</span>
       )}
       <Icon
-        size={16}
-        className="absolute bottom-2 left-3 opacity-50"
+        size={17}
+        className="absolute bottom-3 left-3 opacity-50"
       />
     </>
   )

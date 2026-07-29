@@ -1,121 +1,153 @@
-import { TProfileForm } from '../types/profile-update.types'
-import { ActivityIcon, CircleSmall, Ruler, Weight } from 'lucide-react'
+import { Activity, Goal, Ruler, Weight } from 'lucide-react'
 import Image from 'next/image'
 import { Controller, UseFormReturn } from 'react-hook-form'
 
 import { InputLabel } from '@/shared/components/custom-ui/with-label/InputLabel'
 import { SelectLabel } from '@/shared/components/custom-ui/with-label/SelectLabel'
 
-const optionalNumber = (value: string) =>
-  value.trim() === '' ? undefined : Number(value)
+import { ActivityLevel, NutritionGoal } from '@/__generated__/graphql'
+
+import { TProfileForm } from '../types/profile-update.types'
 
 export function BodyMeasurementsForm({
   form
 }: {
-  form: UseFormReturn<TProfileForm>
+  form: UseFormReturn<TProfileForm, unknown, TProfileForm>
 }) {
   const { register } = form
 
   return (
-    <div className="flex items-center gap-6 rounded-xl border bg-white p-6">
+    <div className="flex items-center gap-6 rounded-xl border p-6">
       <Image
-        src="/images/Female.svg"
+        src="/images/women.jpeg"
         alt="Women"
         width={200}
         height={1000}
       />
       <div>
-        <h2 className="mb-6 text-lg font-semibold">Body Measurements</h2>
+        <h2 className="mb-6 text-lg font-semibold">Body measurements</h2>
 
         <div className="grid grid-cols-2 gap-4">
           <InputLabel
-            label="Height cm"
             Icon={Ruler}
+            label="Height cm"
             placeholder="Height cm"
-            type="number"
-            {...register('measurement.heightCm', {
-              setValueAs: optionalNumber
-            })}
-          />
-          <InputLabel
-            label="Weight kg"
-            Icon={Weight}
-            placeholder="Weight kg"
-            type="number"
-            {...register('measurement.weightKg', {
-              setValueAs: optionalNumber
-            })}
-          />
-          <InputLabel
-            label="Goal weight"
-            Icon={Weight}
-            placeholder="Goal weight"
-            type="number"
-            {...register('measurement.goalWeightKg', {
-              setValueAs: optionalNumber
+            {...register('measurements.heightCm', {
+              setValueAs: value => (value === '' ? undefined : Number(value))
             })}
           />
 
           <InputLabel
-            placeholder="Chest cm"
+            Icon={Weight}
+            label="Weight kg"
+            placeholder="Weight kg"
+            {...register('measurements.weightKg', {
+              setValueAs: value => (value === '' ? undefined : Number(value))
+            })}
+          />
+
+          <InputLabel
+            Icon={Weight}
+            label="Goal weight kg"
+            placeholder="Goal weight kg"
+            {...register('measurements.goalWeightKg', {
+              setValueAs: value => (value === '' ? undefined : Number(value))
+            })}
+          />
+
+          <InputLabel
+            Icon={Ruler}
             label="Chest cm"
-            Icon={Ruler}
-            type="number"
-            {...register('measurement.chestCm', { setValueAs: optionalNumber })}
+            placeholder="Chest cm"
+            {...register('measurements.chestCm', {
+              setValueAs: value => (value === '' ? undefined : Number(value))
+            })}
           />
+
           <InputLabel
+            Icon={Ruler}
             label="Waist cm"
-            Icon={Ruler}
             placeholder="Waist cm"
-            type="number"
-            {...register('measurement.waistCm', { setValueAs: optionalNumber })}
+            {...register('measurements.waistCm', {
+              setValueAs: value => (value === '' ? undefined : Number(value))
+            })}
           />
+
           <InputLabel
+            Icon={Ruler}
             label="Thigh cm"
-            Icon={Ruler}
             placeholder="Thigh cm"
-            type="number"
-            {...register('measurement.thighCm', { setValueAs: optionalNumber })}
+            {...register('measurements.thighCm', {
+              setValueAs: value => (value === '' ? undefined : Number(value))
+            })}
           />
+
           <InputLabel
-            label="Arm cm"
             Icon={Ruler}
+            label="Arm cm"
             placeholder="Arm cm"
-            type="number"
-            {...register('measurement.armCm', { setValueAs: optionalNumber })}
+            {...register('measurements.armCm', {
+              setValueAs: value => (value === '' ? undefined : Number(value))
+            })}
           />
+
           <Controller
             control={form.control}
-            name="measurement.nutritionGoal"
+            name="measurements.nutritionGoal"
             render={({ field }) => (
               <SelectLabel
                 value={field.value}
                 onChange={field.onChange}
-                label="Set your nutrition goal"
-                Icon={CircleSmall}
+                Icon={Goal}
+                label="Set your nutrition goals"
                 options={[
-                  { label: 'Lose weight', value: 'WEIGHT_LOSS' },
-                  { label: 'Maintain weight', value: 'MAINTENANCE' },
-                  { label: 'Gain muscle', value: 'MUSCLE_GAIN' }
+                  {
+                    label: 'Lose weight',
+                    value: NutritionGoal.WeightLoss
+                  },
+                  {
+                    label: 'Maintain weight',
+                    value: NutritionGoal.Maintenance
+                  },
+                  {
+                    label: 'Gain muscle',
+                    value: NutritionGoal.MuscleGain
+                  }
                 ]}
               />
             )}
           />
+
           <Controller
             control={form.control}
-            name="measurement.activityLevel"
+            name="measurements.activityLevel"
             render={({ field }) => (
               <SelectLabel
                 value={field.value}
                 onChange={field.onChange}
+                Icon={Activity}
                 label="Define your activity level"
-                Icon={ActivityIcon}
                 options={[
-                  { label: 'Lightly active', value: 'LIGHT' },
-                  { label: 'Moderately active', value: 'MODERATE' },
-                  { label: 'Sedentary', value: 'SEDENTARY' },
-                  { label: 'Very Active', value: 'VERY_ACTIVE' },
-                  { label: 'Active', value: 'ACTIVE' }
+                  {
+                    label: 'Lightly active',
+                    value: ActivityLevel.Light
+                  },
+                  {
+                    label: 'Moderately active',
+                    value: ActivityLevel.Moderate
+                  },
+                  {
+                    label: 'Active',
+                    value: ActivityLevel.Active
+                  },
+                  {
+                    label: 'Sedentary',
+                    value: ActivityLevel.Sedentary
+                  },
+                  {
+                    label: 'Very active',
+                    value: ActivityLevel.VeryActive
+                  }
                 ]}
               />
             )}

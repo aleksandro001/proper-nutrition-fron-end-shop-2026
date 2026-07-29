@@ -8,14 +8,14 @@ import { getApolloClient } from '@/shared/lib/apollo/apollo-client'
 
 const apollo = getApolloClient()
 
-export const Provider = ({ children }: { children: React.ReactNode }) => {
+export function Provider({ children }: { children: React.ReactNode }) {
   return (
     <NuqsAdapter>
       <ApolloProvider client={apollo}>
         {children}
         <Toaster
           position="top-center"
-          containerClassName="mt-16 font-mono text-sm "
+          containerClassName="mt-16 font-mono font-medium"
         />
       </ApolloProvider>
     </NuqsAdapter>

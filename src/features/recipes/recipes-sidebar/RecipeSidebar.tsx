@@ -1,31 +1,30 @@
-import { recipeSidebarMenuData } from './recipe-sidebar-menu.data'
 import { Search } from 'lucide-react'
-import { useQueryState } from 'nuqs'
 
 import { SidebarMenuAccordion } from '@/shared/components/custom-ui/sidebar-menu-accordion/SidebarMenuAccordion'
 import { InputLabel } from '@/shared/components/custom-ui/with-label/InputLabel'
 
-import useDebounce from '@/shared/hooks/useDebounce'
+import { recipeSidebarMenuData } from './recipe-sidebar-menu.data'
+import { TRecipeFilters } from './recipe-sidebar-menu.types'
 
 interface Props {
-  filter: string
+  filters: TRecipeFilters
   searchTerm: string
-  setFilter: (filter: string) => void
-  setSearchTerm: (searchTerm: string) => void
+  setSearchTerm: (term: string) => void
+  setFilters: (filters: Partial<TRecipeFilters>) => void
 }
 
 export function RecipeSidebar({
-  filter,
+  filters,
   searchTerm,
-  setFilter,
-  setSearchTerm
+  setSearchTerm,
+  setFilters
 }: Props) {
-  // TODO: implement filter on Apollo hook
-  const setActiveFilter = (filter: string) => {
-    setFilter(filter)
+  const setActiveFilter = (key: keyof TRecipeFilters, value: string) => {
+    setFilters({ [key]: value })
   }
+
   return (
-    <div className="w-full max-w-64 space-y-6 rounded-2xl bg-white p-3 shadow-xl">
+    <aside className="w-full max-w-64 space-y-6 rounded-2xl bg-white px-3 py-4">
       <InputLabel
         Icon={Search}
         placeholder="Search by recipes"
@@ -33,11 +32,12 @@ export function RecipeSidebar({
         value={searchTerm}
         onChange={e => setSearchTerm(e.target.value)}
       />
+
       <SidebarMenuAccordion
         data={recipeSidebarMenuData}
-        activeFilter={filter}
+        values={filters}
         onValueChange={setActiveFilter}
       />
-    </div>
+    </aside>
   )
 }

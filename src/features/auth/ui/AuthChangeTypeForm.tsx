@@ -11,35 +11,34 @@ export function AuthChangeTypeForm({ isLogin }: Props) {
     <div className="mt-4 text-center text-sm">
       {isLogin ? (
         <div>
-          <p>
-            Don`t have an account?{' '}
+          <div>
+            Don&apos;t have an account?{' '}
             <Link
-              className="link-simple"
               href={PAGES.REGISTER}
+              className="link-simple"
             >
               Register
             </Link>
-          </p>
-          {/*forgot password*/}
-          <p className="mt-2">
+          </div>
+          <div className="mt-2">
             <Link
-              className="link-simple"
               href={PAGES.FORGOT_PASSWORD}
+              className="link-simple"
             >
               Forgot password?
             </Link>
-          </p>
+          </div>
         </div>
       ) : (
-        <p>
+        <div>
           Already have an account?{' '}
           <Link
-            className="link-simple"
             href={PAGES.LOGIN}
+            className="link-simple"
           >
             Login
           </Link>
-        </p>
+        </div>
       )}
     </div>
   )

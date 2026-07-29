@@ -1,4 +1,4 @@
-mutation UpdateProfile($data: UserUpdateInput!) {
+mutation UpdateProfile($data: UserUpdateCustomInput!) {
   updateProfile(data: $data) {
     id
     email

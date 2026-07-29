@@ -1,25 +1,32 @@
-import { Input } from '../../ui/input'
-import { LabelIcon } from './LabelIcon'
 import { cn } from '@/shared/utils'
 import { LucideIcon } from 'lucide-react'
 import { ComponentProps } from 'react'
 
+import { Input } from '../../ui/input'
+import { LabelIcon } from './LabelIcon'
+
 interface Props extends ComponentProps<'input'> {
   label?: string
   Icon: LucideIcon
+  parentClassName?: string
 }
 
-export function InputLabel({ label, Icon, className, type, ...props }: Props) {
+export function InputLabel({
+  parentClassName,
+  label,
+  Icon,
+  className,
+  ...props
+}: Props) {
   return (
-    <label className="relative block">
+    <label className={cn('relative block', parentClassName)}>
       <LabelIcon
         label={label}
         Icon={Icon}
       />
       <Input
-        type={type}
         {...props}
-        className={cn('rounded-2xl bg-[#ececec] pl-9', className)}
+        className={cn('rounded-xl bg-[#f0efef] pl-9', className)}
       />
     </label>
   )

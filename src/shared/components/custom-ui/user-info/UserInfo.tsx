@@ -14,11 +14,12 @@ export function UserInfo({ avatarUrl, name, email }: Props) {
         alt={name}
         width={36}
         height={36}
-        className="rounded-full"
+        className="size-9 rounded-full object-cover"
       />
+
       <div>
         <p className="font-medium">{name}</p>
-        <p className="text-muted-foreground text-sm">{email}</p>
+        <p className="text-sm opacity-60">{email}</p>
       </div>
     </div>
   )

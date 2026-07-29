@@ -1,7 +1,8 @@
 'use client'
-import { IMenuItem } from './nav-menu.types'
 import { cn } from '@/shared/utils'
 import Link from 'next/link'
+
+import type { IMenuItem } from './nav-menu.types'
 
 interface Props {
   menuItem: IMenuItem
@@ -13,13 +14,16 @@ export function NavMenuItem({ isActive, menuItem }: Props) {
     <Link
       href={menuItem.href}
       className={cn(
-        'group flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors',
+        'flex items-center gap-1.5 rounded-2xl px-4 py-2 font-medium transition-colors',
         isActive
           ? 'bg-[#1f2023] text-white'
           : 'bg-gray-300 text-[#696969] hover:bg-gray-400'
       )}
     >
-      <menuItem.icon className="size-4" />
+      <menuItem.icon
+        className="size-4"
+        aria-hidden="true"
+      />
       <span>{menuItem.label}</span>
     </Link>
   )

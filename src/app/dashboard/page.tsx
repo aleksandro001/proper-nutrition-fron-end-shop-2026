@@ -1,5 +1,8 @@
-import { NO_INDEX_PAGE } from '@/shared/constants/seo.constants'
 import type { Metadata } from 'next'
+
+import { Dashboard } from '@/features/dashboard/Dashboard'
+
+import { NO_INDEX_PAGE } from '@/constants/seo.constants'
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -7,5 +10,5 @@ export const metadata: Metadata = {
 }
 
 export default function Page() {
-  return <div></div>
+  return <Dashboard />
 }

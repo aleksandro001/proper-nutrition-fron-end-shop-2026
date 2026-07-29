@@ -2,6 +2,7 @@ query GetProfile {
   me {
     id
     email
+    avatarUrl
     profile {
       fullName
       gender

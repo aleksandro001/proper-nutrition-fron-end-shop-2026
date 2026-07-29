@@ -1,4 +1,5 @@
 'use client'
+
 import { useApolloClient, useMutation } from '@apollo/client/react'
 import { LogOut } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -11,6 +12,7 @@ import { LogoutDocument } from '@/__generated__/graphql'
 
 export function Logout() {
   const [logout, { loading }] = useMutation(LogoutDocument)
+
   const client = useApolloClient()
   const router = useRouter()
 
@@ -18,21 +20,22 @@ export function Logout() {
     try {
       await logout()
       await client.clearStore()
+
       router.replace(PAGES.LOGIN)
     } catch (error) {
-      console.error('Logout failed:', error)
+      console.error('Logout error:', error)
     }
   }
+
   return (
-    <div>
-      <Button
-        variant="soft"
-        className="mr-2 rounded-full"
-        onClick={handleLogout}
-        disabled={loading}
-      >
-        <LogOut className="size-5" />
-      </Button>
-    </div>
+    <Button
+      variant="soft"
+      size="icon"
+      className="mr-6 rounded-full"
+      onClick={handleLogout}
+      disabled={loading}
+    >
+      <LogOut className="size-5" />
+    </Button>
   )
 }

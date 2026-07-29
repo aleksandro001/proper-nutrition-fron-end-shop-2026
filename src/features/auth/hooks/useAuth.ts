@@ -7,9 +7,10 @@ export function useAuth() {
     fetchPolicy: 'cache-first',
     nextFetchPolicy: 'cache-first'
   })
+
   return {
     user: data?.me ?? null,
-    isLanding: loading,
+    isLoading: loading,
     isLoggedIn: !!data?.me
   }
 }
