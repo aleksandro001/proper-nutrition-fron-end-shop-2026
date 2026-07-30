@@ -1,36 +1,223 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🥗 Proper Nutrition Shop
 
-## Getting Started
+> Modern e-commerce application for a healthy nutrition store built with **Next.js 16**, **React 19**, **TypeScript** and **GraphQL**.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![React](https://img.shields.io/badge/React-19-61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![GraphQL](https://img.shields.io/badge/GraphQL-Apollo-E10098)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4-38BDF8)
+
+## 📖 About
+
+Proper Nutrition Shop is a production-oriented frontend application for an online sports nutrition and healthy food store.
+
+The project demonstrates building scalable user interfaces with modern React ecosystem tools, focusing on maintainability, developer experience, performance and clean architecture.
+
+The application is designed using technologies commonly found in commercial frontend projects.
+
+---
+
+## ✨ Features
+
+* 🛍 Product catalog
+* 🔍 Search and filtering
+* 📦 Product pages
+* 🛒 Shopping cart
+* 👤 Authentication
+* 📱 Fully responsive interface
+* ⚡ Server Side Rendering / App Router
+* 🔥 GraphQL integration
+* 🍞 Toast notifications
+* ✅ Form validation
+* 🛡 Cloudflare Turnstile protection
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+
+* React 19
+* Next.js 16
+* TypeScript
+* App Router
+
+### UI
+
+* Tailwind CSS v4
+* Shadcn/UI
+* Radix UI
+* Lucide Icons
+* CVA
+* Tailwind Merge
+
+### State Management
+
+* Zustand
+
+### API
+
+* Apollo Client
+* GraphQL
+* GraphQL Code Generator
+
+### Forms
+
+* React Hook Form
+
+### Utilities
+
+* Day.js
+* clsx
+* nuqs
+* jose
+
+---
+
+## 🏗 Architecture
+
+The project follows a scalable architecture with clear separation of responsibilities.
+
+* reusable UI components
+* feature-based structure
+* GraphQL layer
+* generated API types
+* centralized state management
+* reusable hooks
+* utility modules
+
+This approach keeps the application maintainable as the codebase grows.
+
+---
+
+## 🚀 Getting Started
+
+```bash
+git clone https://github.com/aleksandro001/proper-nutrition-fron-end-shop-2026.git
+
+cd proper-nutrition-fron-end-shop-2026
+
+npm install
+
+npm run dev
+```
+
+Open
+
+```
+http://localhost:3000
+```
+
+---
+
+## 📂 Project Structure
+
+```text
+src/
+ ├── app/
+ ├── components/
+ ├── features/
+ ├── graphql/
+ ├── hooks/
+ ├── lib/
+ ├── services/
+ ├── store/
+ ├── shared/
+ └── utils/
+```
+
+---
+
+## ⚙ Available Scripts
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Start development server
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Production build
 
-## Learn More
+```bash
+npm run start
+```
 
-To learn more about Next.js, take a look at the following resources:
+Run production server
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run lint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+ESLint
 
-## Deploy on Vercel
+```bash
+npm run graphql:compile
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Generate GraphQL types
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run graphql:watch
+```
+
+Watch GraphQL schema changes
+
+---
+
+## 🎯 What this project demonstrates
+
+This project showcases practical experience with:
+
+* building scalable React applications
+* Next.js App Router
+* modern React 19 patterns
+* GraphQL integration
+* state management with Zustand
+* component architecture
+* reusable UI systems
+* TypeScript best practices
+* responsive design
+* production-ready project organization
+
+---
+
+## 📸 Screenshots
+
+> Add screenshots or GIFs here.
+
+Example:
+
+* Home Page
+* Product Page
+* Cart
+* Checkout
+* Mobile Version
+
+---
+
+## 🔮 Roadmap
+
+* Payment integration
+* Wishlist
+* Product reviews
+* Admin dashboard
+* Order history
+* Favorites
+* Localization
+* Dark mode
+
+---
+
+## 👨‍💻 Author
+
+**Aleksandr**
+
+Frontend Engineer
+
+GitHub:
+https://github.com/aleksandro001
